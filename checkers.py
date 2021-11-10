@@ -351,7 +351,7 @@ class Damas:
             return False
         return True
 
-    def evaluate_states(self):
+    def avaliar_estados(self):
         t1 = time.time()
         estado_atual = Node(deepcopy(self.matrix))
 
@@ -460,7 +460,7 @@ class Damas:
             else:
                 print(ansi_cyan + "Turno do Computador." + ansi_reset)
                 print("Thinking...")
-                self.evaluate_states()
+                self.avaliar_estados()
             if self.jogador_pecas == 0:
                 self.print_matrix()
                 print(ansi_red + "Voce está sem pecas.\nDERROTA!" + ansi_reset)
