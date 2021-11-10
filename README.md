@@ -7,3 +7,6 @@ Algumas regras basicas
 # 3.Voce pode desistir a qualquer momento pressionando 's'.
 
 # Agora que voce esta familiarizado com as regras, divirta-se!
+
+
+Faltou organizar e separar o codigo melhor, sintam-se a vontade para alterar e dar pitacos de mudancas!
