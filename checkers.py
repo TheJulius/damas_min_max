@@ -459,7 +459,7 @@ class Damas:
                 self.get_jogador_input()
             else:
                 print(ansi_cyan + "Turno do Computador." + ansi_reset)
-                print("Thinking...")
+                print("Pensando...")
                 self.avaliar_estados()
             if self.jogador_pecas == 0:
                 self.print_matrix()
