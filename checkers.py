@@ -21,17 +21,17 @@ class Node:
         self.parent = parent
 
     def get_children(self, minimizing_jogador, pulo_mandatorio):
-        current_state = deepcopy(self.tabuleiro)
+        estado_atual = deepcopy(self.tabuleiro)
         movimentos_disponiveis = []
         children_states = []
         big_letter = ""
         queen_row = 0
         if minimizing_jogador is True:
-            movimentos_disponiveis = Damas.encontrar_movimentos_disponiveis(current_state, pulo_mandatorio)
+            movimentos_disponiveis = Damas.encontrar_movimentos_disponiveis(estado_atual, pulo_mandatorio)
             big_letter = "C"
             queen_row = 7
         else:
-            movimentos_disponiveis = Damas.encontrar_movimentos_disponiveis_jogador(current_state, pulo_mandatorio)
+            movimentos_disponiveis = Damas.encontrar_movimentos_disponiveis_jogador(estado_atual, pulo_mandatorio)
             big_letter = "B"
             queen_row = 0
         for i in range(len(movimentos_disponiveis)):
@@ -39,7 +39,7 @@ class Node:
             old_j = movimentos_disponiveis[i][1]
             new_i = movimentos_disponiveis[i][2]
             new_j = movimentos_disponiveis[i][3]
-            state = deepcopy(current_state)
+            state = deepcopy(estado_atual)
             Damas.fazer_movimento(state, old_i, old_j, new_i, new_j, big_letter, queen_row)
             children_states.append(Node(state, [old_i, old_j, new_i, new_j]))
         return children_states
@@ -353,9 +353,9 @@ class Damas:
 
     def evaluate_states(self):
         t1 = time.time()
-        current_state = Node(deepcopy(self.matrix))
+        estado_atual = Node(deepcopy(self.matrix))
 
-        first_computador_moves = current_state.get_children(True, self.pulo_mandatorio)
+        first_computador_moves = estado_atual.get_children(True, self.pulo_mandatorio)
         if len(first_computador_moves) == 0:
             if self.jogador_pecas > self.computador_pecas:
                 print(
@@ -385,26 +385,26 @@ class Damas:
     def minimax(tabuleiro, depth, alpha, beta, maximizing_jogador, pulo_mandatorio):
         if depth == 0:
             return Damas.calcular_heuristica(tabuleiro)
-        current_state = Node(deepcopy(tabuleiro))
+        estado_atual = Node(deepcopy(tabuleiro))
         if maximizing_jogador is True:
             max_eval = -math.inf
-            for child in current_state.get_children(True, pulo_mandatorio):
+            for child in estado_atual.get_children(True, pulo_mandatorio):
                 ev = Damas.minimax(child.get_tabuleiro(), depth - 1, alpha, beta, False, pulo_mandatorio)
                 max_eval = max(max_eval, ev)
                 alpha = max(alpha, ev)
                 if beta <= alpha:
                     break
-            current_state.set_value(max_eval)
+            estado_atual.set_value(max_eval)
             return max_eval
         else:
             min_eval = math.inf
-            for child in current_state.get_children(False, pulo_mandatorio):
+            for child in estado_atual.get_children(False, pulo_mandatorio):
                 ev = Damas.minimax(child.get_tabuleiro(), depth - 1, alpha, beta, True, pulo_mandatorio)
                 min_eval = min(min_eval, ev)
                 beta = min(beta, ev)
                 if beta <= alpha:
                     break
-            current_state.set_value(min_eval)
+            estado_atual.set_value(min_eval)
             return min_eval
 
     @staticmethod
