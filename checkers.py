@@ -13,6 +13,7 @@ ansi_white = "\u001b[37m"
 ansi_reset = "\u001b[0m"
 
 
+#classe nodo com os getters e setters
 class Node:
     def __init__(self, tabuleiro, move=None, parent=None, value=None):
         self.tabuleiro = tabuleiro
@@ -59,7 +60,7 @@ class Node:
     def set_parent(self, parent):
         self.parent = parent
 
-
+#classe damas com os metodos principais
 class Damas:
 
     def __init__(self):
@@ -75,19 +76,22 @@ class Damas:
                 row.append("---")
         self.posicao_computador()
         self.posicao_jogador()
-
+    
+    #define que o computador e o C
     def posicao_computador(self):
         for i in range(3):
             for j in range(8):
                 if (i + j) % 2 == 1:
                     self.matrix[i][j] = ("c" + str(i) + str(j))
-
+    
+    #define que o jogador e o B
     def posicao_jogador(self):
         for i in range(5, 8, 1):
             for j in range(8):
                 if (i + j) % 2 == 1:
                     self.matrix[i][j] = ("b" + str(i) + str(j))
-
+    
+    #faz o print da matriz
     def print_matrix(self):
         i = 0
         print()
@@ -103,7 +107,8 @@ class Damas:
                 j = "     0"
             print(j, end="   ")
         print("\n")
-
+        
+    #metodo que analisa o input do jogador
     def get_jogador_input(self):
         movimentos_disponiveis = Damas.encontrar_movimentos_disponiveis_jogador(self.matrix, self.pulo_mandatorio)
         if len(movimentos_disponiveis) == 0:
@@ -159,6 +164,7 @@ class Damas:
                         break
 
     @staticmethod
+    #metodo que analisa o tabuleiro e enxerga as possibilidades de movimentos
     def encontrar_movimentos_disponiveis(tabuleiro, pulo_mandatorio):
         movimentos_disponiveis = []
         pulos_disponiveis = []
@@ -200,6 +206,7 @@ class Damas:
                 return pulos_disponiveis
 
     @staticmethod
+    #metodo que checa os pulos
     def checar_pulos(tabuleiro, old_i, old_j, via_i, via_j, new_i, new_j):
         if new_i > 7 or new_i < 0:
             return False
@@ -218,6 +225,7 @@ class Damas:
         return True
 
     @staticmethod
+    #metodo que checa o movimento feito
     def checar_movimentos(tabuleiro, old_i, old_j, new_i, new_j):
 
         if new_i > 7 or new_i < 0:
@@ -234,6 +242,7 @@ class Damas:
             return True
 
     @staticmethod
+    #metodo que faz o calculo da funcao utilidade para o minmax
     def calcular_heuristica(tabuleiro):
         result = 0
         mine = 0
@@ -277,6 +286,7 @@ class Damas:
 
         return result + (mine - opp) * 1000
 
+    #metodo que encontra os movimentos possiveis para o jogador
     @staticmethod
     def encontrar_movimentos_disponiveis_jogador(tabuleiro, pulo_mandatorio):
         movimentos_disponiveis = []
@@ -319,6 +329,7 @@ class Damas:
                 return pulos_disponiveis
 
     @staticmethod
+    # Metodo que checa a quantidade de movimentos do jogador
     def checar_movimentos_jogador(tabuleiro, old_i, old_j, new_i, new_j):
         if new_i > 7 or new_i < 0:
             return False
@@ -334,6 +345,7 @@ class Damas:
             return True
 
     @staticmethod
+    #Metodo que checa a quantidade de pulos do jogador
     def checar_pulos_jogador(tabuleiro, old_i, old_j, via_i, via_j, new_i, new_j):
         if new_i > 7 or new_i < 0:
             return False
@@ -351,6 +363,7 @@ class Damas:
             return False
         return True
 
+    #metodo que avalia os possiveis movimentos para o computador
     def avaliar_estados(self):
         t1 = time.time()
         estado_atual = Node(deepcopy(self.matrix))
@@ -382,6 +395,8 @@ class Damas:
         print("Em" + str(diff) + " segundos.")
 
     @staticmethod
+    #metodo que faz o calculo minmax, levando em conta a poda alfa beta
+    # onde e armazenado sommente o caminho mais vantajoso
     def minimax(tabuleiro, depth, alpha, beta, maximizing_jogador, pulo_mandatorio):
         if depth == 0:
             return Damas.calcular_heuristica(tabuleiro)
@@ -408,6 +423,7 @@ class Damas:
             return min_eval
 
     @staticmethod
+    #metodo que faz o movimento e a substituicao dos tracinhos
     def fazer_movimento(tabuleiro, old_i, old_j, new_i, new_j, big_letter, queen_row):
         letter = tabuleiro[old_i][old_j][0]
         i_difference = old_i - new_i
@@ -429,6 +445,7 @@ class Damas:
         tabuleiro[old_i][old_j] = "---"
         tabuleiro[new_i][new_j] = letter + str(new_i) + str(new_j)
 
+    #metodo principal para startar o jogo
     def play(self):
         print(ansi_cyan + "##### Bem Vindo ao jogo de DAMAS ####" + ansi_reset)
         print("\nAlgumas regras basicas:")
